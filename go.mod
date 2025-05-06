@@ -1,3 +1,3 @@
-module github.com/go-poc
+module github.com/investment-calculator
 
 go 1.24.2
