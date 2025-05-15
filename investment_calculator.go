@@ -25,10 +25,11 @@ func main() {
 	fmt.Printf("Total profit of %.2f was achieved", profit)
 }
 
-func calculation(investmentAmount, years, investmentRate float64) (float64, float64, float64) {
-	fv := investmentAmount * math.Pow((1+investmentRate/100), years)
-	inv := fv / math.Pow(inflationRate/100, years)
-	profit := inv - investmentAmount
+func calculation(investmentAmount, years, investmentRate float64) (fv float64, inv float64, profit float64) {
+	fv = investmentAmount * math.Pow((1+investmentRate/100), years)
+	inv = fv / math.Pow(inflationRate/100, years)
+	profit = inv - investmentAmount
 
-	return fv, inv, profit
+	// alternative  to return fv, inv, profit
+	return
 }
