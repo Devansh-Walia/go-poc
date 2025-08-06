@@ -6,15 +6,15 @@ import (
 	investmentCalculator "github.com/investment-calculator/investment"
 )
 
-var account_balance float64 = 0
+var accountBalance float64 = 0
 
-func add_to_account(balance float64) {
-	account_balance += balance
+func addToAccount(balance float64) {
+	accountBalance += balance
 }
 
-func withdraw_from_account(balance float64) {
-	if account_balance > balance {
-		account_balance -= balance
+func withdrawFromAccount(balance float64) {
+	if accountBalance > balance {
+		accountBalance -= balance
 	} else {
 		fmt.Println("Insufficient balance")
 	}
@@ -54,13 +54,13 @@ func main() {
 	switch choice {
 	case 1:
 		fmt.Println("Add money")
-		add_to_account(GetVar("Enter the amount you want to add: "))
+		addToAccount(GetVar("Enter the amount you want to add: "))
 	case 2:
 		fmt.Println("Invest")
 		investment()
 	case 3:
 		fmt.Println("Withdraw")
-		withdraw_from_account(GetVar("Enter the amount you want to withdraw: "))
+		withdrawFromAccount(GetVar("Enter the amount you want to withdraw: "))
 	case 4:
 		fmt.Println("Exit")
 	default:
