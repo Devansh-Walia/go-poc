@@ -43,7 +43,8 @@ func investment() {
 
 func main() {
 
-	for i := 0; i < 2; i++ {
+menu:
+	for {
 		fmt.Println("Please choose from the following options:")
 		fmt.Println("To Add money -> 1")
 		fmt.Println("To Invest -> 2")
@@ -65,6 +66,7 @@ func main() {
 			withdrawFromAccount(GetVar("Enter the amount you want to withdraw: "))
 		case 4:
 			fmt.Println("Exit")
+			break menu
 		default:
 			fmt.Println("Invalid choice")
 		}
@@ -72,4 +74,6 @@ func main() {
 		fmt.Println()
 		fmt.Println("gb 👍")
 	}
+
+	fmt.Println("okay gg!")
 }
