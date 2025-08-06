@@ -42,28 +42,34 @@ func investment() {
 }
 
 func main() {
-	fmt.Println("Please choose from the following options:")
-	fmt.Println("To Add money -> 1")
-	fmt.Println("To Invest -> 2")
-	fmt.Println("To Withdraw -> 3")
-	fmt.Println("To Exit -> 4")
 
-	var choice int
-	fmt.Scan(&choice)
+	for i := 0; i < 2; i++ {
+		fmt.Println("Please choose from the following options:")
+		fmt.Println("To Add money -> 1")
+		fmt.Println("To Invest -> 2")
+		fmt.Println("To Withdraw -> 3")
+		fmt.Println("To Exit -> 4")
 
-	switch choice {
-	case 1:
-		fmt.Println("Add money")
-		addToAccount(GetVar("Enter the amount you want to add: "))
-	case 2:
-		fmt.Println("Invest")
-		investment()
-	case 3:
-		fmt.Println("Withdraw")
-		withdrawFromAccount(GetVar("Enter the amount you want to withdraw: "))
-	case 4:
-		fmt.Println("Exit")
-	default:
-		fmt.Println("Invalid choice")
+		var choice int
+		fmt.Scan(&choice)
+
+		switch choice {
+		case 1:
+			fmt.Println("Add money")
+			addToAccount(GetVar("Enter the amount you want to add: "))
+		case 2:
+			fmt.Println("Invest")
+			investment()
+		case 3:
+			fmt.Println("Withdraw")
+			withdrawFromAccount(GetVar("Enter the amount you want to withdraw: "))
+		case 4:
+			fmt.Println("Exit")
+		default:
+			fmt.Println("Invalid choice")
+		}
+
+		fmt.Println()
+		fmt.Println("gb 👍")
 	}
 }
