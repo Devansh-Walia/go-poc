@@ -2,22 +2,73 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 
 	investmentCalculator "github.com/investment-calculator/investment"
 )
 
-var accountBalance float64 = 0
-
-func addToAccount(balance float64) {
-	accountBalance += balance
+func writeToFile(balance float64) error {
+	balanceText := fmt.Sprintf("%.2f", balance) // Format with 2 decimal places
+	if err := os.WriteFile("passbook.txt", []byte(balanceText), 0644); err != nil {
+		fmt.Printf("Error writing to file: %v\n", err)
+		return err
+	}
+	fmt.Println("Wrote to file!!")
+	return nil
 }
 
-func withdrawFromAccount(balance float64) {
-	if accountBalance > balance {
-		accountBalance -= balance
-	} else {
-		fmt.Println("Insufficient balance")
+func loadDataFromFile() (float64, error) {
+	data, err := os.ReadFile("passbook.txt")
+	if err != nil {
+		// Create file if it doesn't exist
+		if os.IsNotExist(err) {
+			fmt.Println("Creating new passbook file with initial balance 0")
+			writeToFile(0)
+			return 0, nil
+		}
+		return 0, fmt.Errorf("error reading passbook: %v", err)
 	}
+
+	if len(data) == 0 {
+		fmt.Println("Passbook file is empty, starting with balance 0")
+		writeToFile(0)
+		return 0, nil
+	}
+
+	// Parse the text as float64
+	balance, err := strconv.ParseFloat(string(data), 64)
+	if err != nil {
+		fmt.Println("Passbook file has invalid data format, resetting to 0")
+		writeToFile(0)
+		return 0, nil
+	}
+
+	return balance, nil
+}
+
+func addToAccount(balance float64) error {
+	var err error
+	accountBalance, err = loadDataFromFile()
+	if err != nil {
+		return err
+	}
+	accountBalance += balance
+	return writeToFile(accountBalance)
+}
+
+func withdrawFromAccount(balance float64) error {
+	var err error
+	accountBalance, err = loadDataFromFile()
+	if err != nil {
+		return err
+	}
+
+	if accountBalance >= balance {
+		accountBalance -= balance
+		return writeToFile(accountBalance)
+	}
+	return fmt.Errorf("insufficient balance: %.2f available, %.2f requested", accountBalance, balance)
 }
 
 func GetVar(message string) (value float64) {
@@ -41,7 +92,17 @@ func investment() {
 	fmt.Printf("Total profit of %.2f was achieved", profit)
 }
 
+var accountBalance float64
+
 func main() {
+
+	var err error
+	accountBalance, err = loadDataFromFile()
+	if err != nil {
+		fmt.Printf("Error loading account balance: %v\n", err)
+		return
+	}
+	fmt.Println("account balance", accountBalance)
 
 menu:
 	for {
@@ -74,6 +135,8 @@ menu:
 		fmt.Println()
 		fmt.Println("gb 👍")
 	}
+
+	writeToFile(accountBalance)
 
 	fmt.Println("okay gg!")
 }
